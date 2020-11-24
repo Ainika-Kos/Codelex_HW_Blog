@@ -133,9 +133,9 @@ export const Articles = () => {
               {commentArray.map(({ name, email, body }) => {
                 return (
                   <div key={name}>
-                    <p className="comments__name"><b>Name:</b>{name}</p>
-                    <p className="comments__name"><b>Email:</b>{email}</p>
-                    <p className="comments__text"><b>Comment:</b>{body}</p>
+                    <p className="comments__name"><b>Name: </b>{name}</p>
+                    <p className="comments__name"><b>Email: </b>{email}</p>
+                    <p className="comments__text"><b>Comment: </b>{body}</p>
                   </div>
                 );
               })}
