@@ -19,13 +19,6 @@ export const About = () => {
   const [users, setUsers] = useState<Users[]>([]);
   const isEnabled = userName.length > 0 && userEmail.length > 0;
 
-  // const inputEl = useRef(null);
-
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   inputEl.current.focus();
-  // }, []);
-
   const subscribeHandler = () => {
     if (userName && userEmail) {
       if (users.some(({ email }) => email === userEmail)) {

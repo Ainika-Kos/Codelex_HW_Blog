@@ -24,6 +24,7 @@ export const Articles = () => {
 
   const [article, setArticle] = useState<Article>();
   const [commentArray, setCommentArray] = useState<Comments[]>([]);
+  
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userComment, setUserComment] = useState('');
@@ -48,16 +49,16 @@ export const Articles = () => {
     // });
   }, [id]);
 
-  // useEffect(() => {
-  //   const newCommentArray = JSON.parse(localStorage.getItem('comments') || '{}');
-  //   if (commentArray) {
-  //     setCommentArray(newCommentArray);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const newCommentArray = JSON.parse(localStorage.getItem('comments') || '{}');
+    if (commentArray) {
+      setCommentArray(newCommentArray);
+    }
+  }, []);
 
-  // useEffect(() => {
-  //   localStorage.setItem('comments', JSON.stringify(commentArray));
-  // }, [commentArray]);
+  useEffect(() => {
+    localStorage.setItem('comments', JSON.stringify(commentArray));
+  }, [commentArray]);
 
 
   const prevPostHandler = () => {
@@ -132,9 +133,9 @@ export const Articles = () => {
               {commentArray.map(({ name, email, body }) => {
                 return (
                   <div key={name}>
-                    <p className="comments__name"><b>Name: </b>{name}</p>
-                    <p className="comments__name"><b>Email: </b>{email}</p>
-                    <p className="comments__text"><b>Comment: </b>{body}</p>
+                    <p className="comments__name"><b>Name:</b>{name}</p>
+                    <p className="comments__name"><b>Email:</b>{email}</p>
+                    <p className="comments__text"><b>Comment:</b>{body}</p>
                   </div>
                 );
               })}

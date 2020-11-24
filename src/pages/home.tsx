@@ -3,7 +3,6 @@ import { useHistory } from 'react-router-dom';
 import '../App.css';
 import { ScrollUp } from '../components/ScrollUp/ScrollUp';
 
-
 type Articles = {
   id: number,
   title: string,
