@@ -1,5 +1,5 @@
 import React from 'react';
-import './ScrollUp.css';
+// import './ScrollUp.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { Button } from '../Button/Button';
