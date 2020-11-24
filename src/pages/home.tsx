@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import '../App.css';
+import { ScrollUp } from '../components/ScrollUp/ScrollUp';
 
 
 type Articles = {
@@ -46,6 +47,7 @@ export const Home = () => {
           </div>
         </div>
       </div>
+      <ScrollUp />
     </section>
   );
 };
