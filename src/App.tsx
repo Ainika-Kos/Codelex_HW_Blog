@@ -40,7 +40,6 @@ const App = () => {
                 >
                   Home
                 </NavLink>
-                &nbsp;&nbsp;&nbsp;
                 <NavLink 
                   exact
                   to="/about"
@@ -49,7 +48,6 @@ const App = () => {
                 >
                   About
                 </NavLink>
-                &nbsp;&nbsp;&nbsp;
                 <NavLink
                   exact
                   to="/contacts"
@@ -58,7 +56,6 @@ const App = () => {
                 >
                   Contacts
                 </NavLink>
-                &nbsp;&nbsp;&nbsp;
                 <NavLink
                   to="/articles"
                   className="link"
