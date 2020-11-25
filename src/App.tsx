@@ -77,6 +77,9 @@ const App = () => {
                 <Route path="/articles/:id">
                   <Articles />
                 </Route>
+                <Route path="/notFound">
+                  <NotFound />
+                </Route>
                 <Route path="*">
                   <NotFound />
                 </Route>

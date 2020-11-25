@@ -3,11 +3,14 @@ import {
   useParams,
   useHistory
 } from 'react-router-dom';
+import axios from 'axios';
 import { Button } from '../components/Button/Button';
 import { Input } from '../components/Input/Input';
 import { Textarea } from '../components/Textarea/Textarea';
 
 type Comments = {
+  postId: number,
+  commentId: number,
   name: string,
   email: string,
   body: string
@@ -18,47 +21,54 @@ type Article = {
   userId: number,
   title: string,
   body: string,
+  comments: [],
 };
 
 export const Articles = () => {
 
-  const [article, setArticle] = useState<Article>();
+  const [article, setArticle] = useState<Article | undefined>();
   const [commentArray, setCommentArray] = useState<Comments[]>([]);
-  
+
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userComment, setUserComment] = useState('');
+  const [currentPostId, setCurrentPostId] = useState(0);
+  const [commentId, setCommentId] = useState(0);
 
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      .then((res) => res.json())
-      .then((data) => setArticle(data));
-  }, [article]);
-
-  useEffect(() => {
-    fetch(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
-      .then((res) => res.json())
-      .then((data) => setCommentArray(data));
-    // .catch((error) => {
-    //   if (error.status === 404) {
-    //     history.push('/notFound');
-    //   }
-    // });
+    axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .then((res) => setArticle({
+        ...res.data,
+        comments: [],
+      }))
+      .catch((error) => {
+        if (error.response.status === 404) {
+          history.push('/notFound');
+        }
+      });
   }, [id]);
 
   useEffect(() => {
-    const newCommentArray = JSON.parse(localStorage.getItem('comments') || '{}');
-    if (commentArray) {
-      setCommentArray(newCommentArray);
-    }
-  }, []);
+    axios.get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
+      .then((res) => setCommentArray(res.data));
+    const newArticle = {...article};
+    newArticle.comments.push(commentArray);
+    setArticle(newArticle);
+  }, [id]);
 
-  useEffect(() => {
-    localStorage.setItem('comments', JSON.stringify(commentArray));
-  }, [commentArray]);
+  // useEffect(() => {
+  //   const newCommentArray = JSON.parse(localStorage.getItem('comments') || '{}');
+  //   if (commentArray) {
+  //     setCommentArray(newCommentArray);
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   localStorage.setItem('comments', JSON.stringify(commentArray));
+  // }, [commentArray]);
 
 
   const prevPostHandler = () => {
@@ -71,9 +81,13 @@ export const Articles = () => {
 
   const addCommentHandler = () => {
     if (userName && userComment) {
+      setCurrentPostId(article?.id || 0 + 1);
+      setCommentId(article?.comments.length || 0 + 1);
       setCommentArray([
         ...commentArray,
         {
+          postId: currentPostId,
+          commentId,
           name: userName,
           email: userEmail,
           body: userComment,
@@ -105,9 +119,12 @@ export const Articles = () => {
                   </div>
                   <div className="col-xs-12 col-md-6">
                     <div className="card__text-wrapper">
-                      <h3>Post #{article?.id}</h3>
-                      <h2>{article?.title}</h2>
-                      <p>{article?.body}{article?.body}{article?.body}</p>
+                      {article && 
+                        <div>
+                          <h3>Post #{article?.id}</h3>
+                          <h2>{article?.title}</h2>
+                          <p>{article?.body}{article?.body}{article?.body}</p>
+                        </div>}
                     </div>
                   </div>
                 </div>
@@ -130,7 +147,7 @@ export const Articles = () => {
         <div className="row center-xs">
           <div className="col-xs-12">
             <div className="comments-wrapper">
-              {commentArray.map(({ name, email, body }) => {
+              {article && article.comments.map(({ name, email, body }) => {
                 return (
                   <div key={name}>
                     <p className="comments__name"><b>Name: </b>{name}</p>
