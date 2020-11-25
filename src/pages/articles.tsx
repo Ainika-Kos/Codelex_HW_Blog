@@ -26,7 +26,7 @@ type Article = {
 
 export const Articles = () => {
 
-  const [article, setArticle] = useState<Article | undefined>();
+  const [article, setArticle] = useState<Article>();
   const [commentArray, setCommentArray] = useState<Comments[]>([]);
 
   const [userName, setUserName] = useState('');
