@@ -138,7 +138,7 @@ export const Articles = () => {
         </div>
         <div className="row">
           <div className="col-xs-10 col-xs-offset-1">
-            <h3 className="comments__heading">This post {article?.comments.length ? `has ${article.comments.length}` : ' hasn\'t any'} comments</h3>
+            <h3 className="comments__heading">This post {article && article.comments.length ? `has ${article.comments.length}` : ' hasn\'t any'} comments</h3>
           </div>
         </div>
         <div className="row center-xs">
