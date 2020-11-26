@@ -8,13 +8,13 @@ import { Button } from '../components/Button/Button';
 import { Input } from '../components/Input/Input';
 import { Textarea } from '../components/Textarea/Textarea';
 
-type Comments = {
-  postId: number,
-  commentId: number,
-  name: string,
-  email: string,
-  body: string
-};
+// type Comments = {
+//   postId: number,
+//   commentId: number,
+//   name: string,
+//   email: string,
+//   body: string
+// };
 
 type Article = {
   id: number,
@@ -27,23 +27,27 @@ type Article = {
 export const Articles = () => {
 
   const [article, setArticle] = useState<Article>();
-  const [commentArray, setCommentArray] = useState<Comments[]>([]);
-
+ 
   const [userName, setUserName] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userComment, setUserComment] = useState('');
-  const [currentPostId, setCurrentPostId] = useState(0);
-  const [commentId, setCommentId] = useState(0);
+
+  const [loading, setLoading] = useState(true);
 
   const { id } = useParams<{ id: string }>();
   const history = useHistory();
 
   useEffect(() => {
     axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-      .then((res) => setArticle({
-        ...res.data,
-        comments: [],
-      }))
+      .then((res) => {
+        const newArticle = { ...res.data, comments: [] };
+        axios.get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
+          .then((res2) => {
+            newArticle.comments.push(...res2.data);
+            setArticle(newArticle);
+            setLoading(false);
+          });
+      })
       .catch((error) => {
         if (error.response.status === 404) {
           history.push('/notFound');
@@ -51,24 +55,14 @@ export const Articles = () => {
       });
   }, [id]);
 
+  
+
   useEffect(() => {
-    axios.get(`https://jsonplaceholder.typicode.com/comments?postId=${id}`)
-      .then((res) => setCommentArray(res.data));
-    const newArticle = {...article};
-    newArticle.comments.push(commentArray);
-    setArticle(newArticle);
-  }, [id]);
-
-  // useEffect(() => {
-  //   const newCommentArray = JSON.parse(localStorage.getItem('comments') || '{}');
-  //   if (commentArray) {
-  //     setCommentArray(newCommentArray);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   localStorage.setItem('comments', JSON.stringify(commentArray));
-  // }, [commentArray]);
+    const newArticle = JSON.parse(localStorage.getItem('article') || '{}');
+    if (article) {
+      setArticle(newArticle);
+    }
+  }, []);
 
 
   const prevPostHandler = () => {
@@ -81,23 +75,26 @@ export const Articles = () => {
 
   const addCommentHandler = () => {
     if (userName && userComment) {
-      setCurrentPostId(article?.id || 0 + 1);
-      setCommentId(article?.comments.length || 0 + 1);
-      setCommentArray([
-        ...commentArray,
-        {
-          postId: currentPostId,
-          commentId,
-          name: userName,
-          email: userEmail,
-          body: userComment,
-        }
-      ]);
+      const newComment = {
+        postId: article?.id || 0 + 1,
+        id: article?.comments.length || 0 + 1,
+        name: userName,
+        email: userEmail,
+        body: userComment,
+      };
+      // @ts-ignore
+      const newArticle: Article = { ...article };
+      // @ts-ignore
+      newArticle?.comments.push(newComment);
+      setArticle(newArticle);
+      localStorage.setItem('article', JSON.stringify(newArticle));
     }
     setUserName('');
     setUserEmail('');
     setUserComment('');
   };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <section>
@@ -119,7 +116,7 @@ export const Articles = () => {
                   </div>
                   <div className="col-xs-12 col-md-6">
                     <div className="card__text-wrapper">
-                      {article && 
+                      {article &&
                         <div>
                           <h3>Post #{article?.id}</h3>
                           <h2>{article?.title}</h2>
@@ -141,7 +138,7 @@ export const Articles = () => {
         </div>
         <div className="row">
           <div className="col-xs-10 col-xs-offset-1">
-            <h3 className="comments__heading">This post {commentArray.length ? `has ${commentArray.length}` : ' hasn\'t any'} comments</h3>
+            <h3 className="comments__heading">This post {article?.comments.length ? `has ${article.comments.length}` : ' hasn\'t any'} comments</h3>
           </div>
         </div>
         <div className="row center-xs">
