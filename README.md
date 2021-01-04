@@ -1,19 +1,18 @@
-## Noteikumi:
-1. OK Blogam jābūt sākumlapai/home, kurā redzami visi bloga ieraksti .
-2. OK Blogam jābūt lapai about, kur ir informācija par bloga autoru.
-3. OK Jābūt navigācijas sadaļai, kur var pārslēgties starp home/about.
-4. OK Tikko kā atveras lapa jāuzlec paziņojumam "Welcome to my blog". Tekstu var brīvi izvēlēties, tāpat arī, iespējams, paziņojumu var taisīt kā popup logu. Get creative. (Jāizmanto useEffect).
-5. OK Sākumlapā, nospiežot uz bloga ieraksta, lietotājam atveras lapa ar konkrēto ierakstu un url nomainas uz posts/1, kur 1 ir atvērtā ieraksta id.
-6. OK Katram ierakstam var pievienot komentāru, kurš kaut kur tiek arī parādīts pēc pievienošanas.
-7. ?? Jābūt 404 lapai, kur aiziet, kad url ir ievadīts nepareizi. 
-8. OK Dati jāņem no api 
+# Blog in React
 
-## Papildus: 
-9. OK About -> email, subscribe button 
-10. OK About toast - atbilstoši ievadītajam e-pastam
-11. OK Navigācija - pārveidot Link uz NavLink + active
-12. ?? Komentāri - local storage
-13. OK Pārslēgšanās starp bloga postiem ar pogām
-14. OK Contacts lapa ar inputiem
-15. OK Izdalīt komponentēs buttonus un inputus
-16. ?? useRef - iefocusējas input about lapai
+## Task rules:
+1. Blog has home page with all blog titles;
+2. Blog has about page with information about blog author;
+3. Blog has navigation pane;
+4. UseEffect on page loading with welcome message;
+5. User can on home page can click on the title and blog reloads to the specific article page (by ID);
+6. For each article user can post comment and see it on the article page.
+7. Blog has 404 /  not found page, if the ID of article doesn't mutch existable article
+8. Blog articles are fetched from API. 
+
+## Additional: 
+9. About page user can subscribe (checking existing subscriber by email)
+10. After subscribing toastify with confirmation message
+11. Article page with prev & next button for reading another articles
+12. Contacts page has inputs for question and toastify
+13. On about page useRef for focusing input
