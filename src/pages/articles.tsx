@@ -8,14 +8,6 @@ import { Button } from '../components/Button/Button';
 import { Input } from '../components/Input/Input';
 import { Textarea } from '../components/Textarea/Textarea';
 
-// type Comments = {
-//   postId: number,
-//   commentId: number,
-//   name: string,
-//   email: string,
-//   body: string
-// };
-
 type Article = {
   id: number,
   userId: number,
